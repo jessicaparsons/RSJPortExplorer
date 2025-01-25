@@ -56,8 +56,16 @@ struct PortGridItemView: View {
 }
 
 #Preview("Itinerary View") {
-    @Previewable @State var selectedTab = MainView.Tabs.itinerary
     
-    ItineraryView(selectedTab: $selectedTab, itinerary: SampleItineraryData.sampleItineraries.first)
+    let sampleItinerary = SampleItineraryData.sampleItineraries.first
+
+    
+    let sampleViewModel = ItineraryViewModel(
+        itinerary: sampleItinerary,
+        horizontalSizeClass: .compact
+    )
+
+    
+    ItineraryView(viewModel: sampleViewModel)
     
 }

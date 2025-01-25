@@ -10,7 +10,6 @@ import MapKit
 
 struct InsetMapView: View {
     
-    @Binding var selectedTab: MainView.Tabs
     let port: Port
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
@@ -63,7 +62,7 @@ struct InsetMapView: View {
     
     if let itinerary = SampleItineraryData.sampleItineraries.first,
        let port = itinerary.portsOfCall.first {
-        InsetMapView(selectedTab: $selectedTab, port: port, latitude: 6.600286, longitude: 16.4377599)
+        InsetMapView(port: port, latitude: 6.600286, longitude: 16.4377599)
     } else {
        Text("error")
     }

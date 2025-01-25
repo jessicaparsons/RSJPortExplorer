@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MainView: View {
-    
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var selectedTab: Tabs = .itinerary
+    @StateObject var cruiseViewModel = CruiseViewModel()
     
     enum Tabs: Equatable, Hashable {
         case itinerary
         case watch
-        case map
+        case settings
         case gallery
     }
     
@@ -30,17 +32,29 @@ struct MainView: View {
                     
             }
             
-            Tab("Locations", systemImage: "map", value: .map) {
-                MapView()
+            Tab("Settings", systemImage: "gear", value: .settings) {
+                SettingsView()
                     
             }
             
             Tab("Gallery", systemImage: "photo", value: .gallery) {
-                GalleryView(selectedTab: $selectedTab)
+                GalleryView(horizontalSizeClass: horizontalSizeClass)
                     
             }
         }//:TAB
+        .onAppear {
+            prefetchImages()
+        }
     }
+    
+    func prefetchImages() {
+        let imageUrls = cruiseViewModel.itinerary.flatMap { itinerary in
+            [itinerary.image] + itinerary.portsOfCall.flatMap { [$0.image] + $0.gallery }
+        }.compactMap { URL(string: $0) }
+        
+        ImagePrefetcher(urls: imageUrls).start()
+    }
+    
 }
 
 #Preview {

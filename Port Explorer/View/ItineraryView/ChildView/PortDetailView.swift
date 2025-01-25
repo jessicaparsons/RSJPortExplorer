@@ -10,7 +10,6 @@ import Kingfisher
 
 struct PortDetailView: View {
     
-    @Binding var selectedTab: MainView.Tabs
     let port: Port
     
     
@@ -54,7 +53,7 @@ struct PortDetailView: View {
                         //MARK: - MAP
                         Group {
                             HeadingView(headingImage: "map", headingText: "Location")
-                            InsetMapView(selectedTab: $selectedTab, port: port, latitude: port.location.latitude, longitude: port.location.longitude)
+                            InsetMapView(port: port, latitude: port.location.latitude, longitude: port.location.longitude)
                         }
                         
                         
@@ -97,7 +96,7 @@ struct PortDetailView: View {
     
     if let itinerary = SampleItineraryData.sampleItineraries.first,
        let port = itinerary.portsOfCall.first {
-        PortDetailView(selectedTab: $selectedTab, port: port)
+        PortDetailView(port: port)
     } else {
         Text("error")
     }

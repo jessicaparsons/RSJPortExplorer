@@ -10,27 +10,30 @@ import MapKit
 
 struct MapView: View {
     
-    @State private var cameraPosition: MapCameraPosition = {
-        var mapCoordinates = CLLocationCoordinate2D(latitude: 6.600286, longitude: 16.4377599)
-        var mapZoomLevel = MKCoordinateSpan(latitudeDelta: 70.0, longitudeDelta: 70.0)
-        var mapRegion = MapCameraPosition.region(MKCoordinateRegion(center: mapCoordinates, span: mapZoomLevel))
-        return mapRegion
-    }()
-    
-    let locations: [PortLocation] = Bundle.main.decode("locations.json")
+    @StateObject var viewModel = CruiseViewModel()
+    @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var selection: String?
     @State private var latitude: String = "6.600286"
     @State private var longitude: String = "16.4377599"
+    
+    var locations: [Location] {
+        viewModel.itinerary.flatMap { itinerary in
+            itinerary.portsOfCall.map { $0.location }
+        }
+    }
     
     var body: some View {
 
         Map(position: $cameraPosition, selection: $selection) {
             ForEach(locations) { location in
-                Annotation(location.name, coordinate: location.location) {
+                Annotation(location.name, coordinate: location.coordinates) {
                     MapAnnotationView()
                }
             }//:LOOP
         }//:MAP
+        .task {
+            await viewModel.fetchCruiseData()
+        }
         .overlay(
             HStack(alignment: .center, spacing: 12) {
                 Image("compass")
@@ -84,5 +87,6 @@ struct MapView: View {
 }
 
 #Preview {
+    
     MapView()
 }

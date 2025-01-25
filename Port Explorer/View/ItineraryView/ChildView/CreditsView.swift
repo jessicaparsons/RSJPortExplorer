@@ -15,7 +15,7 @@ struct CreditsView: View {
                 .scaledToFit()
                 .frame(width: 128, height: 128)
             Text("""
-    Copyright © Jessica Parsons
+    Copyright © Royal Sea Journeys Port Explorer
     All rights reserved
     Juniper Creative Co.
     """)

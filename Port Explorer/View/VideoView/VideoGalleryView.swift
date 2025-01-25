@@ -33,7 +33,7 @@ struct VideoGalleryView: View {
                                 .padding(.bottom, 8)
                             Button("Contact us to submit your video") {
                                 HapticsManager.shared.triggerMediumImpact()
-                                print("go to settings page")
+                                selectedTab = .settings
                             }
                             .buttonStyle(CapsuleButtonStyle())
                         }

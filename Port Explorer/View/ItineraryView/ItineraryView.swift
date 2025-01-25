@@ -9,29 +9,25 @@ import SwiftUI
 import Kingfisher
 
 struct ItineraryView: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Binding var selectedTab: MainView.Tabs
     
-    let itinerary: Itinerary?
+    @StateObject private var viewModel: ItineraryViewModel
     
-    @State private var isGridViewActive: Bool = false
-    @State private var gridLayout: [GridItem] = [GridItem(.flexible())]
-    @State private var gridColumn: Int = 1
-    @State private var toolbarIcon: String = "square.grid.2x2"
-    
+    init(viewModel: ItineraryViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         NavigationStack() {
             VStack {
                 
                 //MARK: - ITINERARY LIST
-                if let itinerary {
-                    if !isGridViewActive {
+                if let itinerary = viewModel.itinerary {
+                    if !viewModel.isGridViewActive {
                         List {
                             BannerImageView(image: itinerary.image)
                             
                             ForEach(itinerary.portsOfCall) { port in
-                                NavigationLink(destination: PortDetailView(selectedTab: $selectedTab, port: port)) {
+                                NavigationLink(destination: PortDetailView(port: port)) {
                                     PortListItemView(port: port)
                                 }
                             }//:LOOP
@@ -42,9 +38,9 @@ struct ItineraryView: View {
                     } else {
                         ScrollView {
                             BannerImageView(image: itinerary.image)
-                            LazyVGrid(columns: gridLayout, alignment: .center) {
+                            LazyVGrid(columns: viewModel.gridLayout, alignment: .center) {
                                 ForEach(itinerary.portsOfCall) { port in
-                                    NavigationLink(destination: PortDetailView(selectedTab: $selectedTab, port: port)) {
+                                    NavigationLink(destination: PortDetailView(port: port)) {
                                         PortGridItemView(port: port)
                                     }
                                 }//:LOOP
@@ -61,7 +57,7 @@ struct ItineraryView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(itinerary?.name ?? "Selected Itinerary")
+                    Text(viewModel.itinerary?.name ?? "Selected Itinerary")
                         .font(.title3)
                         .fontWeight(.bold)
                         .padding(.bottom)
@@ -70,23 +66,22 @@ struct ItineraryView: View {
                     HStack(spacing: 2) {
                         // LIST
                         Button(action: {
-                            isGridViewActive = false
+                            viewModel.toggleGridView(isActive: false)
                             HapticsManager.shared.triggerMediumImpact()
                         }) {
                             Image(systemName: "square.fill.text.grid.1x2")
                                 .font(.title2)
-                                .foregroundColor(isGridViewActive ? .primary : .accentColor)
+                                .foregroundColor(viewModel.isGridViewActive ? .primary : .accentColor)
                         }
                         
                         // GRID
                         Button(action: {
-                            isGridViewActive = true
+                            viewModel.toggleGridView(isActive: true)
                             HapticsManager.shared.triggerMediumImpact()
-                            gridSwitch()
                         }) {
-                            Image(systemName: toolbarIcon)
+                            Image(systemName: viewModel.toolbarIcon)
                                 .font(.title2)
-                                .foregroundColor(isGridViewActive ? .accentColor : .primary)
+                                .foregroundColor(viewModel.isGridViewActive ? .accentColor : .primary)
                         }
                     }//:HSTACK
                     .padding(.bottom)
@@ -95,37 +90,19 @@ struct ItineraryView: View {
         }//:NAVIGATION
     }//:BODY
     
-    //MARK: - FUNCTIONS
-    
-    func gridSwitch() {
-        withAnimation(.easeIn) {
-            if horizontalSizeClass == .compact {
-                gridLayout = Array(repeating: .init(.flexible(), spacing: Constants.verticalSpacing), count: gridLayout.count % 2 + 1)
-                gridColumn = gridLayout.count
-            } else {
-                gridLayout = Array(repeating: .init(.flexible(), spacing: Constants.verticalSpacing), count: gridLayout.count % 3 + 2)
-                gridColumn = gridLayout.count
-            }
-        }
-        
-        // TOOLBAR IMAGE
-        switch gridColumn {
-        case 1:
-            toolbarIcon = "square.grid.2x2"
-        case 2:
-            toolbarIcon = "rectangle.grid.1x2"
-        case 3:
-            toolbarIcon = "rectangle.grid.1x2"
-        default:
-            toolbarIcon = "square.grid.2x2"
-        }
-    }
 }
 
 
 #Preview {
-    @Previewable @State var selectedTab = MainView.Tabs.itinerary
     
-    ItineraryView(selectedTab: $selectedTab, itinerary: SampleItineraryData.sampleItineraries.first)
+    let sampleItinerary = SampleItineraryData.sampleItineraries.first
+
     
+    let sampleViewModel = ItineraryViewModel(
+        itinerary: sampleItinerary,
+        horizontalSizeClass: .compact
+    )
+
+    
+    ItineraryView(viewModel: sampleViewModel)
 }

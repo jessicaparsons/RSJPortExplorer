@@ -12,17 +12,11 @@ struct CapsuleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.footnote)
-            .padding(.vertical, 12)
-            .padding(.horizontal, 24)
-            .clipShape(Capsule())
-            .shadow(color: shadowColor, radius: configuration.isPressed ? 2 : 4, x: 2, y: 2)
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .font(.headline)
             .foregroundColor(.white)
-            .overlay(
-                Capsule()
-                    .stroke(Color.accentColor, lineWidth: 1)
-            )
-            .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.accentColor)
+            .cornerRadius(10)
     }
 }

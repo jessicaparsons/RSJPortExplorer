@@ -46,7 +46,13 @@ struct HomeView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(alignment: .center, spacing: Constants.gridSpacing) {
                                     ForEach(itineraries.prefix(3)) { itinerary in
-                                        NavigationLink(destination: ItineraryView(selectedTab: $selectedTab, itinerary: itinerary)) {
+                                        NavigationLink(destination:
+                                                        ItineraryView(
+                                                            viewModel: ItineraryViewModel(
+                                                                        itinerary: itinerary,
+                                                                        horizontalSizeClass: horizontalSizeClass)
+                                                        )
+                                        ) {
                                             ItineraryListItemView(itinerary: itinerary)
                                                 .frame(width: Constants.galleryHeight * 1.5)
                                         }
@@ -61,7 +67,13 @@ struct HomeView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(alignment: .center, spacing: Constants.gridSpacing) {
                                     ForEach(itineraries.suffix(2)) { itinerary in
-                                        NavigationLink(destination: ItineraryView(selectedTab: $selectedTab, itinerary: itinerary)) {
+                                        NavigationLink(destination:
+                                                        ItineraryView(
+                                                            viewModel: ItineraryViewModel(
+                                                                itinerary: itinerary,
+                                                                horizontalSizeClass: horizontalSizeClass)
+                                                        )
+                                        ) {
                                             ItineraryListItemView(itinerary: itinerary)
                                                 .frame(width: Constants.galleryHeight * 1.5)
                                         }

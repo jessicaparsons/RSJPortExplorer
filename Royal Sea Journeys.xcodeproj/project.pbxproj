@@ -28,7 +28,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C85DEB992D39DDED0023A1BD /* Exceptions for "Africa" folder in "Royal Sea Journeys" target */ = {
+		C8CB1F442D436CF00010EA5A /* Exceptions for "Port Explorer" folder in "Royal Sea Journeys" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,10 +40,15 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C85DEB6B2D39DB950023A1BD /* Africa */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				C85DEB992D39DDED0023A1BD /* Exceptions for "Africa" folder in "Royal Sea Journeys" target */,
-			);
 			path = Africa;
+			sourceTree = "<group>";
+		};
+		C8CB1F102D4368AA0010EA5A /* Port Explorer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C8CB1F442D436CF00010EA5A /* Exceptions for "Port Explorer" folder in "Royal Sea Journeys" target */,
+			);
+			path = "Port Explorer";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -63,6 +68,7 @@
 		C85DEB602D39DB940023A1BD = {
 			isa = PBXGroup;
 			children = (
+				C8CB1F102D4368AA0010EA5A /* Port Explorer */,
 				C85DEB6B2D39DB950023A1BD /* Africa */,
 				C85DEB6A2D39DB950023A1BD /* Products */,
 			);
@@ -94,6 +100,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				C85DEB6B2D39DB950023A1BD /* Africa */,
+				C8CB1F102D4368AA0010EA5A /* Port Explorer */,
 			);
 			name = "Royal Sea Journeys";
 			packageProductDependencies = (
@@ -287,11 +294,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Africa/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Port Explorer/Preview Content\"";
 				DEVELOPMENT_TEAM = 4Q55A6KPP6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Africa/Info.plist;
+				INFOPLIST_FILE = "Port Explorer/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -320,11 +327,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Africa/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Port Explorer/Preview Content\"";
 				DEVELOPMENT_TEAM = 4Q55A6KPP6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Africa/Info.plist;
+				INFOPLIST_FILE = "Port Explorer/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

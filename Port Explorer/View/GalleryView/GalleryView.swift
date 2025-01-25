@@ -9,29 +9,27 @@ import SwiftUI
 import Kingfisher
 
 struct GalleryView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
+    @StateObject private var galleryViewModel: GalleryViewModel
     @StateObject var viewModel = CruiseViewModel()
-    @Binding var selectedTab: MainView.Tabs
     
-    private var allImages: [String] {
-        viewModel.itinerary.flatMap { itinerary in
-            // Combine itinerary-level and port-level images
-            [itinerary.image] + itinerary.portsOfCall.flatMap { port in
-                [port.image] + port.gallery // Include port gallery images
-            }
-        }
+    @State private var selectedItineraryId: String? = nil
+    @State private var selectedPhoto: String? = nil
+    @State private var showFullScreenImage: Bool = false
+    
+    
+    init(horizontalSizeClass: UserInterfaceSizeClass?) {
+        self._galleryViewModel = StateObject(wrappedValue: GalleryViewModel(horizontalSizeClass: horizontalSizeClass))
     }
-    //!viewModel.itinerary.isEmpty ? viewModel.itinerary : []
     
-    @State private var gridLayout: [GridItem] = [GridItem(.flexible())]
-    @State private var gridColumn: Double = 3.0
-    @State private var selectedPhoto: String = "ocho_rios1"
-    @State private var previousRoundedColumn: Int = 3
-    
-    func gridSwitch() {
-        withAnimation(.easeIn) {
-            let roundedColumns = Int(gridColumn.rounded())
-            gridLayout = Array(repeating: .init(.flexible()), count: Int(roundedColumns))
+    var filteredImages: [String] {
+        if let itineraryId = selectedItineraryId {
+            return viewModel.images(forItineraryId: itineraryId)
+        } else {
+            return viewModel.itinerary.flatMap { itinerary in
+                [itinerary.image] + itinerary.portsOfCall.flatMap { [$0.image] + $0.gallery }
+            }
         }
     }
     
@@ -39,47 +37,43 @@ struct GalleryView: View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center, spacing: 30) {
-                    //MARK: - IMAGE
-                    if let url = URL(string: selectedPhoto) {
-                        KFImage(url)
-                            .placeholder {
-                                Image("ocho_rios1")
-                                    .resizable()
-                                    .aspectRatio(4/3, contentMode: .fit)
-                                    .cornerRadius(Constants.cornerRadius)
-                            }
-                            .onFailure { error in
-                                print("Failed to load itinerary image: \(error.localizedDescription)")
-                            }
-                            .cacheOriginalImage()
-                            .resizable()
-                            .aspectRatio(4/3, contentMode: .fit)
-                            .cornerRadius(Constants.cornerRadius)
-                            .accessibilityLabel("Featured gallery image")
-                    }
                     
-                    //MARK: - SLIDER
-                    
-                    Slider(value: $gridColumn, in: 2...4)
-                        .padding(.horizontal)
-                        .onChange(of: gridColumn) {
-                            let currentRoundedColumn = Int(gridColumn.rounded())
-                            if currentRoundedColumn != previousRoundedColumn {
-                                HapticsManager.shared.triggerMediumImpact()
-                                previousRoundedColumn = currentRoundedColumn
+                    HStack(alignment: .center) {
+                        
+                        //MARK: - PICKER
+                        
+                        Picker("Select Itinerary", selection: $selectedItineraryId) {
+                            Text(selectedItineraryId == nil ? "Filter by itinerary" : "All Images")
+                                .tag(nil as String?)
+                                .font(.caption)
+                            ForEach(viewModel.itinerary, id: \.id) { itinerary in
+                                Text(itinerary.name)
+                                    .tag(itinerary.id as String?)
                             }
-                            
-                            gridSwitch()
                         }
+                        .pickerStyle(.menu)
+                        
+                        Spacer()
+                        
+                        //MARK: - GALLERY DISPLAY CHANGE BUTTON
+                        Button(action: {
+                            galleryViewModel.toggleGridView(isActive: true)
+                            HapticsManager.shared.triggerMediumImpact()
+                        }) {
+                            Image(systemName: galleryViewModel.toolbarIcon)
+                                .font(.title2)
+                                .foregroundColor(.accentColor)
+                        }
+                    }//:HSTACK
                     
                     
                     //MARK: - GRID
-                    if allImages.isEmpty {
+                    if filteredImages.isEmpty {
                         ProgressView("Loading Images...")
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-                        LazyVGrid(columns: gridLayout, alignment: .center, spacing: 10) {
-                            ForEach(allImages, id: \.self) { image in
+                        LazyVGrid(columns: galleryViewModel.gridLayout, alignment: .center, spacing: 10) {
+                            ForEach(filteredImages, id: \.self) { image in
                                 if let url = URL(string: image) {
                                     KFImage(url)
                                         .placeholder {
@@ -94,14 +88,14 @@ struct GalleryView: View {
                                         .cornerRadius(Constants.cornerRadius)
                                         .onTapGesture {
                                             selectedPhoto = image
-                                            HapticsManager.shared.triggerMediumImpact()
+                                            DispatchQueue.main.async {
+                                                showFullScreenImage = true
+                                            }
+                                            
                                         }//:IMAGE
                                 }//:CONDITION
                             }//:LOOP
                         }//:GRID
-                        .onAppear(perform: {
-                            gridSwitch()
-                        })
                     }//:CONDITION
                 }//:VSTACK
                 .padding(.horizontal, Constants.horizontalPadding)
@@ -111,12 +105,29 @@ struct GalleryView: View {
         }//:NAVIGATION
         .task {
             await viewModel.fetchCruiseData()
+            selectedPhoto = filteredImages.first
+        }
+        .fullScreenCover(isPresented: $showFullScreenImage) {
+            if let photo = selectedPhoto {
+                FullScreenImageView(imageURL: photo)
+            } else {
+                VStack(spacing: Constants.verticalSpacing) {
+                    Text("No image available")
+                    Button("Close") {
+                        showFullScreenImage = false
+                    }
+                }
+                
+            }
         }
     }
+    
 }
 
-#Preview {
-    @Previewable @State var selectedTab = MainView.Tabs.itinerary
+//MARK: - PREVIEW
 
-    GalleryView(selectedTab: $selectedTab)
+#Preview {
+    NavigationStack{
+        GalleryView(horizontalSizeClass: .compact)
+    }
 }
