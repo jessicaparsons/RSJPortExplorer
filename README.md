@@ -3,9 +3,8 @@
 **Royal Sea Journeys: Port Explorer** is a fully-featured iOS application designed to bring the ultimate cruise itinerary to life. With a stunning user interface, Port Explorer harnesses the power of **MapKit** and external APIs to deliver dynamic travel content. Whether you're discovering unique shore excursions, exploring breathtaking ports of call, or planning your next adventure, this app is your ultimate digital companion for all things cruising.
 
 ## Screenshots
-|   |   |
-| ------------- | ------------- |
-| ![AppStore Screenshots](assets/app_store_1.jpg) | ![AppStore Screenshots](assets/app_store_2.jpg) |
+![AppStore Screenshots](assets/app_store_1.jpg)
+![AppStore Screenshots](assets/app_store_2.jpg)
 
 ## Demo
 | iPhone | iPad |

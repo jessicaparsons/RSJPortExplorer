@@ -25,7 +25,7 @@
 
 /* Begin PBXFileReference section */
 		C85DEB692D39DB950023A1BD /* Royal Sea Journeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Royal Sea Journeys.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8FFC61E2D495AA700E94762 /* Royal Sea Journeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Royal Sea Journeys.entitlements"; sourceTree = "<group>"; };
+		C8E4A07E2D4991220043EA07 /* Royal Sea Journeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Royal Sea Journeys.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,7 +64,7 @@
 		C85DEB602D39DB940023A1BD = {
 			isa = PBXGroup;
 			children = (
-				C8FFC61E2D495AA700E94762 /* Royal Sea Journeys.entitlements */,
+				C8E4A07E2D4991220043EA07 /* Royal Sea Journeys.entitlements */,
 				C8CB1F102D4368AA0010EA5A /* Port Explorer */,
 				C85DEB6A2D39DB950023A1BD /* Products */,
 			);
@@ -310,6 +310,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -345,6 +346,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
