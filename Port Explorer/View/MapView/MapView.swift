@@ -10,7 +10,7 @@ import MapKit
 
 struct MapView: View {
     
-    @StateObject var viewModel = CruiseViewModel()
+    @EnvironmentObject var viewModel: CruiseViewModel
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var latitude: String = "6.600286"
     @State private var longitude: String = "16.4377599"
@@ -91,6 +91,6 @@ struct MapView: View {
 
 #Preview {
     NavigationStack {
-        MapView()
+        MapView().environmentObject(CruiseViewModel())
     }
 }

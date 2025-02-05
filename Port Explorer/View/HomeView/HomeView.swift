@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel = CruiseViewModel()
+    @EnvironmentObject var viewModel: CruiseViewModel
     @State private var navigateToMapView: Bool = false
     
     let horizontalSizeClass: UserInterfaceSizeClass?
@@ -115,6 +115,6 @@ struct HomeView: View {
     
     @Previewable @State var selectedTab = MainView.Tabs.itinerary
     
-    HomeView(horizontalSizeClass: .compact)
+    HomeView(horizontalSizeClass: .compact).environmentObject(CruiseViewModel())
     
 }

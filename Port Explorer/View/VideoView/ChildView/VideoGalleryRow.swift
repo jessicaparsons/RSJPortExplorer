@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VideoGalleryRowView: View {
     
-    @StateObject var viewModel = CruiseViewModel()
+    @StateObject var viewModel = VideoGalleryViewModel()
     let galleryTitle: String
     let searchTerm: String
     

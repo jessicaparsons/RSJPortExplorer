@@ -10,9 +10,6 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.dismiss) var dismiss
-    
-    @AppStorage("isOnboarding") var isOnboarding: Bool = false
-    
     @State var linkAlert: Bool = false
     
     var body: some View {

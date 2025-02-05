@@ -28,11 +28,7 @@ struct ItineraryHorizontalGalleryView: View {
                 LazyHStack(alignment: .center, spacing: Constants.gridSpacing) {
                     ForEach(displayedItineraries) { itinerary in
                         NavigationLink(destination:
-                                        ItineraryView(
-                                            viewModel: ItineraryViewModel(
-                                                itinerary: itinerary,
-                                                horizontalSizeClass: horizontalSizeClass)
-                                        )
+                                        ItineraryView(itinerary: itinerary, horizontalSizeClass: horizontalSizeClass)
                         ) {
                             ItineraryListItemView(itinerary: itinerary)
                                 .frame(width: horizontalSizeClass == .compact ? Constants.galleryHeight : (Constants.galleryHeight * 1.5))

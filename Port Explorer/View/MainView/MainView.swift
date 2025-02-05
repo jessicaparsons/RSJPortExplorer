@@ -11,7 +11,7 @@ import Kingfisher
 struct MainView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var selectedTab: Tabs = .itinerary
-    @StateObject var cruiseViewModel = CruiseViewModel()
+    @StateObject var viewModel = CruiseViewModel()
     
     enum Tabs: Equatable, Hashable {
         case itinerary
@@ -54,11 +54,12 @@ struct MainView: View {
         .onAppear {
             prefetchImages()
         }
+        .environmentObject(viewModel)
     }
     
     @MainActor
     func prefetchImages() {
-        let imageUrls = cruiseViewModel.itinerary.flatMap { itinerary in
+        let imageUrls = viewModel.itinerary.flatMap { itinerary in
             [itinerary.image] + itinerary.portsOfCall.flatMap { [$0.image] + $0.gallery }
         }.compactMap { URL(string: $0) }
         

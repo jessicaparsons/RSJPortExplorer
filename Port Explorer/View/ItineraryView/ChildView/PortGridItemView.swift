@@ -58,14 +58,7 @@ struct PortGridItemView: View {
 #Preview("Itinerary View") {
     
     let sampleItinerary = SampleItineraryData.sampleItineraries.first
-
     
-    let sampleViewModel = ItineraryViewModel(
-        itinerary: sampleItinerary,
-        horizontalSizeClass: .compact
-    )
-
-    
-    ItineraryView(viewModel: sampleViewModel)
+    ItineraryView(itinerary: sampleItinerary, horizontalSizeClass: .compact)
     
 }

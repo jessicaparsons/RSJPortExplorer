@@ -10,12 +10,15 @@ import Kingfisher
 
 struct GalleryView: View {
     
-    @StateObject private var galleryViewModel: GalleryViewModel
     @StateObject var viewModel = CruiseViewModel()
     
     @State private var selectedItineraryId: String? = nil
     @State private var selectedPhoto: ImageItem? = nil
     @State private var showFullScreenImage: Bool = false
+    @State private var isGridViewActive: Bool = false
+    @State private var gridLayout: [GridItem] = Array(repeating: .init(.flexible(), spacing: Constants.photoGridSpacing), count: 2)
+    @State private var gridColumn: Int = 3
+    @State private var toolbarIcon: String = "square.grid.2x2"
     
     let horizontalSizeClass: UserInterfaceSizeClass?
     
@@ -31,11 +34,6 @@ struct GalleryView: View {
             }.map { url in
                 ImageItem(id: url, url: url) }
         }
-    }
-    
-    init(horizontalSizeClass: UserInterfaceSizeClass?) {
-        _galleryViewModel = StateObject(wrappedValue: GalleryViewModel(horizontalSizeClass: horizontalSizeClass))
-        self.horizontalSizeClass = horizontalSizeClass
     }
     
     var body: some View {
@@ -64,10 +62,10 @@ struct GalleryView: View {
                         
                         //MARK: - GALLERY DISPLAY CHANGE BUTTON
                         Button(action: {
-                            galleryViewModel.toggleGridView(isActive: true)
+                            gridSwitch()
                             HapticsManager.shared.triggerMediumImpact()
                         }) {
-                            Image(systemName: galleryViewModel.toolbarIcon)
+                            Image(systemName: toolbarIcon)
                                 .font(.title2)
                                 .foregroundColor(.accentColor)
                         }
@@ -80,7 +78,7 @@ struct GalleryView: View {
                         ProgressView("Loading Images...")
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-                        LazyVGrid(columns: galleryViewModel.gridLayout, alignment: .center, spacing: Constants.photoGridSpacing) {
+                        LazyVGrid(columns: gridLayout, alignment: .center, spacing: Constants.photoGridSpacing) {
                             ForEach(filteredImages) { image in
                                 if let url = URL(string: image.url) {
                                     KFImage(url)
@@ -114,6 +112,39 @@ struct GalleryView: View {
         .fullScreenCover(item: $selectedPhoto) { image in
             FullScreenImageView(selectedPhoto: image.url)
         }//:FULLSCREEN COVER
+    }
+    
+    //MARK: - FUNCTIONS
+    
+    //Grid Layout Options
+    func gridSwitch() {
+        withAnimation(.easeIn) {
+            
+            if horizontalSizeClass == .compact {
+                // Cycle between 1, 2, 3 columns for compact size class
+                let columnCount = (gridLayout.count % 3) + 1
+                gridLayout = Array(repeating: .init(.flexible(), spacing: Constants.photoGridSpacing), count: columnCount)
+                gridColumn = gridLayout.count
+            } else {
+                // Cycle between 2, 3, 4 columns for regular size class
+                let columnCount = gridLayout.count % 3 + 2 // Increment and reset (2 -> 3 -> 4 -> 2)
+                gridLayout = Array(repeating: .init(.flexible(), spacing: Constants.photoGridSpacing), count: columnCount)
+                gridColumn = gridLayout.count
+            }
+        }
+        
+        
+        // TOOLBAR IMAGE
+        switch gridColumn {
+        case 1:
+            toolbarIcon = "square.grid.2x2" // 1 column
+        case 2:
+            toolbarIcon = "square.grid.3x2" // 2 columns
+        case 3:
+            toolbarIcon = "rectangle.grid.1x2" // 3 columns
+        default:
+            toolbarIcon = "square.grid.2x2"
+        }
     }
     
 }
