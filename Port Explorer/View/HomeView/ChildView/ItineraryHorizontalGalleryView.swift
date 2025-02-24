@@ -41,5 +41,5 @@ struct ItineraryHorizontalGalleryView: View {
 }
 
 #Preview {
-    HomeView(horizontalSizeClass: .regular)
+    HomeView(horizontalSizeClass: .regular).environmentObject(CruiseViewModel())
 }

@@ -64,4 +64,5 @@ struct ItineraryListItemView: View {
     @Previewable @State var selectedTab = MainView.Tabs.itinerary
     
     HomeView(horizontalSizeClass: .compact)
+        .environmentObject(CruiseViewModel())
 }

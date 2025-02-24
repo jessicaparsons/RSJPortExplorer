@@ -11,7 +11,7 @@ import SwiftUI
 struct Constants {
     
     // API
-    static let cruiseDataURL = "https://mocki.io/v1/420519f1-71fe-4583-98ff-f7c9a2a0bbf4"
+    static let cruiseDataURL = "https://mocki.io/v1/5af78d2c-7532-44ad-b114-9743791a2066"
     static let videosBaseURL = "https://pixabay.com/api/videos/"
     
     
